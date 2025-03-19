@@ -1,0 +1,208 @@
+{% extends 'base.html' %} {% block pagetitle %} Plant Disease Detection {%
+endblock pagetitle %} {% block body %}
+<style>
+    .avatar {
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        overflow: hidden;
+    }
+    
+    input[type='file'] {
+        color: transparent;
+    }
+    
+    body {
+        overflow-x: hidden;
+    }
+</style>
+<div class="row mb-5 text-center text-white laptop">
+    <div class="col-lg-10 mx-auto">
+        <img src="assets/images/logo-1-1.png" style="height: 200; margin-top:
+            100px;">
+
+        <h1 class="display-4" style="padding-top: 4%;font-weight: 300;color:
+            rgb(4, 54, 4);"><b>🍁Smart Multi Doc Summarizer🍁 </b></h1>
+        <p class="lead" style="font-weight: 500;color: black;">This AI Engine
+            Will Help To Summarize Multiple Document Files</p>
+    </div>
+</div>
+
+<center class="laptop">
+
+    <!-- <button class="bttn-pill bttn-lg btn-success" style="margin-right: 20px; visibility: hidden;"><b style="color: black; ">Google Drive</b></button> -->
+    <button class="bttn-pill bttn-lg btn-success"><b style="color: black;">
+            <input style="width: 8px;" type="file" id="FileUpload"
+                onchange="selectFolder(event)" webkitdirectory mozdirectory
+                msdirectory odirectory directory multiple />
+
+            Select Document Folder</b></button>
+
+
+    <br>
+    <br>
+    <br>
+
+
+    <style>
+        table {
+            font-family: 'Arial';
+            margin: 25px auto;
+            border-collapse: collapse;
+            border: 1px solid #eee;
+            border-bottom: 2px solid #00cccc;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        table tr:hover {
+            background: #f4f4f4;
+        }
+        
+        table tr:hover td {
+            color: #555;
+        }
+        
+        table th,
+        table td {
+            color: #999;
+            border: 1px solid #eee;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        
+        table th {
+            text-align: center;
+            background: white;
+            color: black;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+        
+        table th.last {
+            border-right: none;
+        }
+    </style>
+    <table id="listAssignments" style="visibility: hidden;">
+        <thead>
+            <tr>
+                <th>Document List</th>
+            </tr>
+        </thead>
+        <tbody id="listAssignmentsBody" style="align-items: center;
+            align-content: center;text-align: center; color: black;
+            background-color: white;">
+
+        </tbody>
+    </table>
+
+
+
+    <div id="algorithm" style="visibility: hidden;">
+
+
+        <h1 class="display-4" style="padding-top: 2%;font-weight: 300;color:
+            rgb(1, 34, 1); font-family: 'Franklin Gothic Medium', 'Arial
+            Narrow', Arial, sans-serif;"><b>⚙️ Select Summary % ⚙️</b></h1>
+        <br>
+        <div class="custom-select" style="margin-top: -5px;">
+            <select id="percent-dropdown" onclick="getOption()">
+                <option class="dropdown-text" value="50">Summary %</option>
+                <option class="dropdown-text" value="30">10% - 30%</option>
+                <option class="dropdown-text" value="40">40%</option>
+                <option class="dropdown-text" value="50">50%</option>
+                <option class="dropdown-text" value="60">60%</option>
+                <option class="dropdown-text" value="70">70%</option>
+            </select>
+            <br>
+            <label for="percent-dropdown">Select a percentage. (Tip: Select 50 
+                or 60)<br>Summary will be presented in
+                approx. X% lines of the available transcript.</label>
+        </div>
+
+
+        <h1 class="display-4" style="padding-top: 2%;font-weight: 300;color:
+            rgb(1, 34, 1); font-family: 'Franklin Gothic Medium', 'Arial
+            Narrow', Arial, sans-serif;"><b>⚙️ Select Algorithm ⚙️</b></h1>
+        <br>
+
+        <form action="/nltk" method="post">
+            <input type="hidden" name="nltk" id="nltk" value="50" /> 
+            <button class="bttn-pill bttn-lg btn-success" style="margin-right: 20px;"><b style="color: black; ">NLTK Algorithm</b></button>
+        </form>
+        <br>
+
+
+        <form action="/textRank" method="post">
+            <input type="hidden" name="textRank" id="textRank" style="visibility: hidden;" value="50" /> 
+            <button class="bttn-pill bttn-lg btn-success" style="margin-right:
+                20px;"><b style="color: black; ">Text Rank Algorithm</b></button>
+        </form>
+        <br>
+
+        <form action="/transformer" method="post">
+             <input type="hidden" name="transformer" id="transformer" style="visibility: hidden;" value="50"/> 
+            <button class="bttn-pill bttn-lg btn-success" style="margin-right:
+                20px;"><b style="color: black; ">Hugging Face
+                    Transformers Algorithm</b></button>
+        </form>
+        <br>
+
+
+
+
+    </div>
+
+    <br>
+    <br>
+
+</center>
+
+
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+    function selectFolder(e) {
+        var theFiles = e.target.files;
+        console.log(theFiles);
+        var table = document.getElementById('listAssignments');
+        var algorithm = document.getElementById('algorithm');
+        table.style.visibility = 'visible';
+        algorithm.style.visibility = 'visible';
+
+        var listAssignmentsBody = document.getElementById('listAssignmentsBody');
+
+        for (let index = 0; index < theFiles.length; ++index) {
+            const element = theFiles[index];
+            var row = document.createElement("tr");
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(element.name);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+
+            listAssignmentsBody.appendChild(row);
+
+        }
+        table.appendChild(listAssignmentsBody);
+
+
+
+    }
+
+    
+</script>
+
+
+<script type="text/javascript">
+    function getOption() {
+        selectElement = document.querySelector('#percent-dropdown');
+        output = selectElement.value;
+        document.getElementById('nltk').value = output;
+        document.getElementById('textRank').value = output;
+        document.getElementById('transformer').value = output;
+
+    }
+    </script>
+
+
+{% endblock body %}

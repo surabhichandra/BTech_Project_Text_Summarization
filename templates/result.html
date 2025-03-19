@@ -1,0 +1,173 @@
+{% extends 'base.html' %} {% block pagetitle %} Smart Multi Doc Summarizern {% endblock pagetitle %} {% block body %}
+<style>
+    .avatar {
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        overflow: hidden;
+    }
+    
+    input[type='file'] {
+        color: transparent;
+    }
+    
+    body {
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="row mb-5 text-center text-white laptop">
+    <div class="col-lg-10 mx-auto">
+        <img src="assets/images/logo.png" class="avatar">
+
+        
+        <h1 class="display-4" style="padding-top: 2%;font-weight: 300;color: rgb(4, 54, 4);"><b>🍁Smart Multi Doc Summarizer🍁 </b></h1>
+
+    </div>
+</div>
+
+<center class="laptop">
+
+
+    <style>
+        table {
+            font-family: 'Arial';
+            margin: 25px auto;
+            border-collapse: collapse;
+            border: 1px solid #eee;
+            border-bottom: 2px solid #00cccc;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.05), 0px 20px 20px rgba(0, 0, 0, 0.05), 0px 30px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        table tr:hover {
+            background: #f4f4f4;
+        }
+        
+        table tr:hover td {
+            color: rgb(10, 1, 48);
+            font-weight: bolder;
+        }
+        
+        table th,
+        table td {
+            color: rgb(7, 6, 6);
+            background-color: white;
+            border: 1px solid #eee;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        
+        table th {
+            text-align: center;
+            background: white;
+            color: black;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+        
+        table th.last {
+            border-right: none;
+        }
+    </style>
+
+    <img src="assets/images/result.gif">
+
+    <h1 class="display-4" style="padding-top: 2%;font-weight: 300;color: rgb(1, 34, 1); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><b>⚙️ {{algorithm}} ⚙️</b></h1>
+
+    <h1 class="display-4" style="padding-top: 2%;font-weight: 300;color: rgb(1, 34, 1); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><b>📈 Summarization Result 📈</b></h1>
+    <br>
+
+
+    <table id="listAssignments" style="margin-left: 5%; margin-right: 5%;">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                 <th>Summarized Content</th>
+             </tr>
+        </thead>
+
+
+        {% for assignment in result %}
+
+        <tr>
+
+
+
+            
+            <td >{{assignment[0]}}</td>
+            <td >{{assignment[2]}} %</td>
+         
+            
+        </tr>
+
+        {% endfor %}
+
+
+
+        <tbody id="listAssignmentsBody" style="align-items: center; align-content: center;text-align: center; color: black; background-color: white;">
+
+        </tbody>
+    </table>
+
+
+    <br>
+    <h1 class="display-4" style="padding-top: 2%;font-weight: 300;color: rgb(1, 34, 1); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><b>📈 All Combined Result 📈</b></h1>
+    <br>
+    <h6 class="display-4" style="padding-top: 0%;margin-bottom: 5%; font-weight: 100; font-size: large; color: rgb(252, 254, 252);margin-left: 10%; margin-right: 10%; justify-content: center;  font-family: 'Franklin Gothic small', 'Arial Narrow', Arial, sans-serif;">{{combine_summary}}</h6>
+
+
+
+    <div id="algorithm">
+
+        <form action="/home">
+            <button class="bttn-pill bttn-lg btn-success" style="margin-right: 20px;"><b style="color: black; ">Check Again</b></button>
+        </form>
+
+        <br>
+
+        <form action="/">
+            <button class="bttn-pill bttn-lg btn-success" style="margin-right: 20px;"><b style="color: black; ">Home</b></button>
+        </form>
+
+    </div>
+
+    <br>
+    <br>
+
+</center>
+
+
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+    function selectFolder(e) {
+        var theFiles = e.target.files;
+        console.log(theFiles);
+        var table = document.getElementById('listAssignments');
+        var algorithm = document.getElementById('algorithm');
+        table.style.visibility = 'visible';
+        algorithm.style.visibility = 'visible';
+
+        var listAssignmentsBody = document.getElementById('listAssignmentsBody');
+
+        for (let index = 0; index < theFiles.length; ++index) {
+            const element = theFiles[index];
+            var row = document.createElement("tr");
+            var cell = document.createElement("td");
+            var cellText = document.createTextNode(element.name);
+            cell.appendChild(cellText);
+            row.appendChild(cell);
+
+            listAssignmentsBody.appendChild(row);
+
+        }
+        table.appendChild(listAssignmentsBody);
+
+
+
+    }
+</script>
+
+
+{% endblock body %}

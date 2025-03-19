@@ -1,0 +1,6 @@
+Designing & developing customer facing core android application
+Design and implemente the work flow of modules
+Developed modular REST APIs for multiple portals of e-commerce applications.
+Improved the loading time of the application by improving the database schema and queries.
+Improved an in-production optimization API's which reduced the data retrieve time from database.
+Tools: Java, Android, Spring MVC, MySql, Arduino, IOT, Postman
